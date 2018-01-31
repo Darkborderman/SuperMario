@@ -151,23 +151,21 @@ function create()
         }
     }
     // create players' container
-    Game.players = {
-        current: new PlayerSetup(
-            Config.currentUserName,
-            Player[Config.currentUserCharacterName],
-            Map.structure[0].start[0].x,
-            Map.structure[0].start[0].y,
-            0,
-            0,
-            Map.structure[0].start[0].x,
-            Map.structure[0].start[0].y,
-            null,
-            true
-        ),
-        others: Game.engine.add.group(),
-        hash: {}
-    };
-    Game.players.hash[Config.currentUserName] = Game.players.current;
+    Game.players = {};
+
+    Game.players.current=new PlayerSetup(
+        Config.currentUserName,
+        Player[Config.currentUserCharacterName],
+        Map.structure[0].start[0].x,
+        Map.structure[0].start[0].y,
+        0,
+        0,
+        Map.structure[0].start[0].x,
+        Map.structure[0].start[0].y,
+        null,
+        true
+    )
+    //Game.players.hash[Config.currentUserName] = Game.players.current;
     
     // create monsters' container
     Game.monsters = {};
@@ -177,17 +175,6 @@ function create()
 
     // create savepoints' container
     Game.savepoints = {};
-
-    // new player tell server to join game
-    socket.emit(
-        '00 playerJoin', 
-        {
-            name: Config.currentUserName,
-            typeName: Player[Config.currentUserCharacterName].spriteName,
-            x: Game.players.current.position.x,
-            y: Game.players.current.position.y
-        }
-    );
 }
 
 function update()
@@ -369,17 +356,8 @@ function update()
     // press up and on floor
     if(currentCharacterCursor.up.isDown && currentCharacter.body.onFloor())
     {
-        socket.emit(
-            'playerMove',
-            {
-                name: Config.currentUserName,
-                move: 'up',
-                x: currentCharacter.position.x,
-                y: currentCharacter.position.y,
-                vx: currentCharacter.body.velocity.x,
-                vy: currentCharacter.body.velocity.y
-            }
-        );
+        //Game.players.hash[playerData.name].body.velocity.x = playerData.vx;
+        currentCharacter.body.velocity.y = 200;
     }
 
     // press or release left
@@ -388,33 +366,21 @@ function update()
         // press left
         if(currentCharacterCursor.left.isDown)
         {
-            socket.emit(
-                'playerMove',
-                {
-                    name: Config.currentUserName,
-                    move: 'left',
-                    x: currentCharacter.position.x,
-                    y: currentCharacter.position.y,
-                    vx: currentCharacter.body.velocity.x,
-                    vy: currentCharacter.body.velocity.y
-                }
-            );
+            Game.players.hash[playerData.name].cursor[playerData.move].isDown = true;
+            Game.players.hash[playerData.name].position.x = playerData.x;
+            Game.players.hash[playerData.name].position.y = playerData.y;
+            Game.players.hash[playerData.name].body.velocity.x = playerData.vx;
+            Game.players.hash[playerData.name].body.velocity.y = playerData.vy;
             currentCharacterIspressed.left = true;
         }
         // release left
         else
         {
-            socket.emit(
-                'playerStop',
-                {
-                    name: Config.currentUserName,
-                    move: 'left',
-                    x: currentCharacter.position.x,
-                    y: currentCharacter.position.y,
-                    vx: currentCharacter.body.velocity.x,
-                    vy: currentCharacter.body.velocity.y
-                }
-            );
+            Game.players.hash[playerData.name].cursor[playerData.move].isDown = false;
+            Game.players.hash[playerData.name].position.x = playerData.x;
+            Game.players.hash[playerData.name].position.y = playerData.y;
+            Game.players.hash[playerData.name].body.velocity.x = playerData.vx;
+            Game.players.hash[playerData.name].body.velocity.y = playerData.vy;
             currentCharacterIspressed.left = false;
         }
     }
@@ -425,33 +391,21 @@ function update()
         // press right
         if(currentCharacterCursor.right.isDown)
         {
-            socket.emit(
-                'playerMove',
-                {
-                    name: Config.currentUserName,
-                    move: 'right',
-                    x: currentCharacter.position.x,
-                    y: currentCharacter.position.y,
-                    vx: currentCharacter.body.velocity.x,
-                    vy: currentCharacter.body.velocity.y
-                }
-            );
+            Game.players.hash[playerData.name].cursor[playerData.move].isDown = true;
+            Game.players.hash[playerData.name].position.x = playerData.x;
+            Game.players.hash[playerData.name].position.y = playerData.y;
+            Game.players.hash[playerData.name].body.velocity.x = playerData.vx;
+            Game.players.hash[playerData.name].body.velocity.y = playerData.vy;
             currentCharacterIspressed.right = true;
         }
         // release right
         else
         {
-            socket.emit(
-                'playerStop',
-                {
-                    name: Config.currentUserName,
-                    move: 'right',
-                    x: currentCharacter.position.x,
-                    y: currentCharacter.position.y,
-                    vx: currentCharacter.body.velocity.x,
-                    vy: currentCharacter.body.velocity.y
-                }
-            );
+            Game.players.hash[playerData.name].cursor[playerData.move].isDown = false;
+            Game.players.hash[playerData.name].position.x = playerData.x;
+            Game.players.hash[playerData.name].position.y = playerData.y;
+            Game.players.hash[playerData.name].body.velocity.x = playerData.vx;
+            Game.players.hash[playerData.name].body.velocity.y = playerData.vy;
             currentCharacterIspressed.right = false;
         }
     }

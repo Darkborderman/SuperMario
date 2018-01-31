@@ -5,7 +5,7 @@ const Config = {
         height: '110%'
     },
     html: {
-        main: 'html_game_block'
+        main: 'demo'
     },
     font: {
         Arial: {
@@ -47,6 +47,6 @@ const Config = {
         right: 1
     },
     delay: 200,
-    currentUserName: $("#userName").html(),
-    currentUserCharacterName: $("#characterName").html()
+    currentUserName: "Default",
+    currentUserCharacterName: "Default"
 };

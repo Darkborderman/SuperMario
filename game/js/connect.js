@@ -351,18 +351,11 @@ socket.on('playerMove',function(playerData){
     {
         if(playerData.move == 'up')
         {
-            Game.players.hash[playerData.name].position.x = playerData.x;
-            Game.players.hash[playerData.name].position.y = playerData.y;
-            Game.players.hash[playerData.name].body.velocity.x = playerData.vx;
-            Game.players.hash[playerData.name].body.velocity.y = playerData.vy;
+
         }
         else
         {
-            Game.players.hash[playerData.name].cursor[playerData.move].isDown = true;
-            Game.players.hash[playerData.name].position.x = playerData.x;
-            Game.players.hash[playerData.name].position.y = playerData.y;
-            Game.players.hash[playerData.name].body.velocity.x = playerData.vx;
-            Game.players.hash[playerData.name].body.velocity.y = playerData.vy;
+
         }
     }
 });
@@ -378,11 +371,7 @@ socket.on('playerStop',function(playerData){
 
     if(playerData.name in Game.players.hash)
     {
-        Game.players.hash[playerData.name].cursor[playerData.move].isDown = false;
-        Game.players.hash[playerData.name].position.x = playerData.x;
-        Game.players.hash[playerData.name].position.y = playerData.y;
-        Game.players.hash[playerData.name].body.velocity.x = playerData.vx;
-        Game.players.hash[playerData.name].body.velocity.y = playerData.vy;
+
     }
 });
 
