@@ -245,6 +245,8 @@ function PlayerSetup
         playerType.spriteName
     );
 
+    character.type=playerType;
+
     // test whether player already pressed or not (for socket.io)
     character.ispressed = {
         left: false,

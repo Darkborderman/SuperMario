@@ -127,7 +127,6 @@ function preload()
             );
         }
     }
-
 }
 
 function create()
@@ -180,12 +179,6 @@ function update()
     // current player collide with solid layer
     Game.engine.physics.arcade.collide(
         Game.players.current,
-        Game.map.solid
-    );
-    
-    // other player collide with solid layer
-    Game.engine.physics.arcade.collide(
-        Game.players.others,
         Game.map.solid
     );
 
@@ -243,14 +236,10 @@ function update()
     }
 
     // detect player finish and fall out of the world
-    // current player only need to detect itself
     Map.detectPlayerWorldBound(Game.players.current);
     
     /*
     let character=Game.players.current;
-    let velocity=character.body.velocity;
-    let playerTypeVelocity=Player.mario.velocity;
-    let cursor=character.cursor;
     
     if(character.name._text == Config.currentUserName)
     {
@@ -262,36 +251,25 @@ function update()
     if(!character.body.onFloor())
         //if player pick more than 1 feather, only 1 feather will effect(or it will be overpowered)
         //velocity.y += playerTypeVelocity.vertical.gravity - Item.feather.effect * (feather >= 1 ? 1 : 0);
-
-    if (cursor.up.isDown)
-    {
-        if(character.body.onFloor())
-        {
-            velocity.y = playerTypeVelocity.vertical.jump;
-        }
-    }
-
     */
-
     
     // current player key press and release event
     let character = Game.players.current;
-    let characterType= Player.mario;
+    let characterType= character.type;
     let characterCursor = character.cursor;
     let cursor=characterCursor;
     let characterIspressed = character.ispressed;
     let name=character.name;
-        // set each players' title on head
-        name.x = Math.floor(character.position.x);
-        name.y = Math.floor(character.position.y - character.height / 3);
-
+    // set each players' title on head
+    name.x = Math.floor(character.position.x);
+    name.y = Math.floor(character.position.y - character.height / 3);
 
     character.body.velocity.y += characterType.velocity.vertical.gravity;
 
     // press up and on floor
     if(characterCursor.up.isDown && character.body.onFloor())
     {
-        character.body.velocity.y -= 800;
+        character.body.velocity.y = characterType.velocity.vertical.jump;
     }
 
     // press or release left
@@ -362,7 +340,6 @@ function update()
             {
                 character.animations.play('leftIdle');
             }
-            //velocity.x = facing * playerTypeVelocity.horizontal.idle;
         }
     }
 }
