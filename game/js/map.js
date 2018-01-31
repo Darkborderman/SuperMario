@@ -40,16 +40,17 @@ const Map = {
     ],
     sound: [
         {
-            name: 'castle',
-            src: ['/game/assets/maps/sounds/castle.wav']
+
+            name: 'field',
+            src: ['/game/assets/maps/sounds/field.wav']
         },
         {
             name: 'cave',
             src: ['/game/assets/maps/sounds/cave.wav']
         },
         {
-            name: 'field',
-            src: ['/game/assets/maps/sounds/field.wav']
+            name: 'castle',
+            src: ['/game/assets/maps/sounds/castle.wav']
         },
         /*{
             name: 'finalboss',

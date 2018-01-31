@@ -39,6 +39,7 @@ const Monster = {
                 character.body.velocity.y = Player[character.key].velocity.vertical.bounce;
                 Monster.goomba.sound.die.play();
                 Monster.goomba.destroy(monster);
+                character.achieve.kill += 1;
             }
             else
             {
@@ -107,33 +108,27 @@ const Monster = {
         overlap: function(character, monster){
             if(character.body.touching.down && !character.body.touching.up)
             {
-                socket.emit(
-                    'monsterDead',
-                    {
-                        monsterKiller: Config.currentUserName,
-                        monsterType: 'caveTurtle',
-                        id: monster.id
-                    }
-                );
                 character.body.velocity.y = Player[character.key].velocity.vertical.bounce;
                 Monster.caveTurtle.sound.die.play();
                 Monster.caveTurtle.destroy(monster);
-                
+                character.achieve.kill += 1;   
             }
             else
             {
-                socket.emit(
-                    'playerDead',
-                    {
-                        name: character.name._text
-                    }
-                );
+                character.type.destroy(character);
             }
         },
         destroy: function(monster){
             monster.animations.stop();
             monster.animations.play('die');
             monster.body.enable = false;
+            setTimeout(
+                function()
+                {
+                    Monster.caveTurtle.respawn(monster);
+                },
+                3000
+            );
         },
         respawn: function(monster){
 	        monster.body.enable = true;
@@ -183,17 +178,19 @@ const Monster = {
             y:0
         },
         overlap: function(character, monster){
-            socket.emit(
-                'playerDead',
-                {
-                    name: character.name._text
-                }
-            );
+            character.type.destroy(character);
         },
         destroy: function(monster){
             monster.animations.stop();
             monster.animations.play('die');
             monster.body.enable = false;
+            setTimeout(
+                function()
+                {
+                    Monster.spikeTurtle.respawn(monster);
+                },
+                3000
+            );
         },
         respawn: function(monster){
             monster.body.enable = true;
@@ -229,22 +226,16 @@ const Monster = {
             y: 500
         },
         overlap: function(character, monster){
-            socket.emit(
-                'playerDead',
-                {
-                    name: character.name._text
-                }
-            );
+            character.type.destroy(character);
         },
-        respawn: function(monster)
-        {
-            //ironFlower never die!
-            return;
+        destroy: function(monster){
+        },
+        respawn: function(monster){
         }
     }
 };
 
-function MonsterSetup(structure=null, monsterData=null)
+function MonsterSetup(structure=null)
 {
     for(let monsterType in Monster)
     {
@@ -269,26 +260,12 @@ function MonsterSetup(structure=null, monsterData=null)
             let child = Game.monsters[monsterType].children[i];
             child.name = monsterType;
             child.id = i;
-            if(monsterData)
-            {
-                child.position.x = monsterData[monsterType][i].x;
-                child.position.y = monsterData[monsterType][i].y;
-                child.body.velocity.x = monsterData[monsterType][i].vx;
-                child.body.velocity.y = monsterData[monsterType][i].vy;
-                child.spawn = {
-                    x: monsterData[monsterType][i].sx,
-                    y: monsterData[monsterType][i].sy
-                };
-            }
-            else
-            {
-                child.body.velocity.x = Monster[monsterType].velocity.x;
-                child.body.velocity.y = Monster[monsterType].velocity.y;
-                child.spawn = {
-                    x: child.position.x,
-                    y: child.position.y
-                };
-            }
+            child.body.velocity.x = Monster[monsterType].velocity.x;
+            child.body.velocity.y = Monster[monsterType].velocity.y;
+            child.spawn = {
+                x: child.position.x,
+                y: child.position.y
+            };
             child.animations.add('walkLeft', Monster[monsterType].animation.walkLeft, Monster[monsterType].animation.frame_rate, true);
             child.animations.add('walkRight', Monster[monsterType].animation.walkRight, Monster[monsterType].animation.frame_rate, true);
             child.animations.add('die', Monster[monsterType].animation.die, Monster[monsterType].animation.frame_rate, true);

@@ -8,15 +8,13 @@ Game.engine = new Phaser.Game(
     // phaser draw engine
     Phaser.CANVAS,
     // html tag id
-    Config.html.main,
+    Config.gameBlock,
     // phaser state object
-    // state order: preload -> create-> update -> render
-    // keep looping between update and render states
+    // state order: preload -> create-> update
     {
         preload: preload,
         create: create,
-        update: update,
-        render: render
+        update: update
     }
 );
 
@@ -139,7 +137,7 @@ function create()
         Map.structure[0],
         Map.tileset[0],
         Map.background[0],
-        Map.sound[2]
+        Map.sound[0]
     );
 
     for(let playerType in Player)
@@ -241,14 +239,6 @@ function update()
     Map.detectPlayerWorldBound(Game.player);
     
     /*
-    let character=Game.player;
-    
-    if(character.name._text == Config.currentUserName)
-    {
-        character.moneyText.setText("Coin: " + character.achieve.coin);
-        character.killText.setText("Kill: " + character.achieve.kill);
-    }
-    
     // stop moving to left or right
     if(!character.body.onFloor())
         //if player pick more than 1 feather, only 1 feather will effect(or it will be overpowered)
@@ -262,62 +252,42 @@ function update()
     let cursor = character.cursor;
     let ispressed = character.ispressed;
     let name=character.name;
+    let coin=character.status.coin;
     // set each players' title on head
     name.x = Math.floor(character.position.x);
     name.y = Math.floor(character.position.y - character.height / 3);
+    character.moneyText.setText("Coin: " + character.achieve.coin);
+    character.killText.setText("Kill: " + character.achieve.kill);
 
     velocity.y += type.velocity.vertical.gravity;
 
-    // press up and on floor
+    //movement part
     if(cursor.up.isDown && character.body.onFloor())
     {
         velocity.y = type.velocity.vertical.jump;
     }
 
-    // press or release left
-    else if(cursor.left.isDown != ispressed.left)
+    if(cursor.left.isDown)
     {
-        // press left
-        if(cursor.left.isDown)
-        {
-            cursor.left.isDown = true;
-            velocity.x = -1*type.velocity.horizontal.move;
-            ispressed.left=true;
-        }
-        // release left
-        else
-        {
-            cursor.left.isDown = false;
-            velocity.x = -1*type.velocity.horizontal.idle;
-            ispressed.left=false;
-        }
+        velocity.x = -1*(coin * Item.coin.effect + type.velocity.horizontal.move);
+        ispressed.left=true;
     }
 
-    // press or release right
-    else if(cursor.right.isDown != ispressed.right)
+    else if(cursor.right.isDown)
     {
-        // press right
-        if(cursor.right.isDown)
-        {
-            cursor.right.isDown = true;
-            velocity.x = type.velocity.horizontal.move;
-            ispressed.right = true;
-        }
-        // release right
-        else
-        {
-            cursor.right.isDown = false;
-            velocity.x = type.velocity.horizontal.idle;
-            ispressed.right = false;
-        }
+        velocity.x = 1*(coin * Item.coin.effect + type.velocity.horizontal.move);
+        ispressed.right = true;
     }
-
+    else
+    {
+        velocity.x = type.velocity.horizontal.idle;
+        ispressed.right = false;
+    }
     //render animation part
     if(cursor.left.isDown)
     {
         if(!character.dieyet)
         {
-            //velocity.x = facing * (coin * Item.coin.effect + playerTypeVelocity.horizontal.move);
             character.animations.play('left');
         }
     }
@@ -325,9 +295,7 @@ function update()
     {
         if(!character.dieyet)
         {
-            //velocity.x = facing * (coin * Item.coin.effect + playerTypeVelocity.horizontal.move);
             character.animations.play('right');
-
         }
     }
     else
@@ -345,5 +313,3 @@ function update()
         }
     }
 }
-
-function render(){}

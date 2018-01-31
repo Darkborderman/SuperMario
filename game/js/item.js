@@ -34,21 +34,22 @@ const Item = {
         },
         overlap: function(character, item)
         {
-            socket.emit(
-                'itemDead',
-                {
-                    itemOwner: Config.currentUserName,
-                    itemType: 'coin',
-                    id: item.id
-                }
-            );
+            Item.coin.sound.get.play();
+            Item.coin.destroy(item,character);
+            character.achieve.coin += 1;
         },
         destroy: function(item, character)
         {
             character.status.coin += 1;
-            character.achieve.coin += 1;
             item.body.enable = false;
             item.visible = false;
+            setTimeout(
+                function()
+                {
+                    Item.coin.respawn(item,character);
+                },
+                3000
+            );
         },
         respawn: function(item, character)
         {
