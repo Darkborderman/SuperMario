@@ -1,0 +1,140 @@
+// section title layout
+// grid template
+$login_section_title_template:
+  ". . . . ."
+  ". previous title next .";
+
+// button layout
+@mixin login_section_title_btn() {
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+
+  img {
+    width: 50%;
+    opacity: 0.8;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+// grid layout
+.section-title {
+  display: grid;
+  grid-template-areas: $login_section_title_template;
+  grid-template-columns: auto 10% 25% 10% auto;
+  justify-items: center;
+  align-items: center;
+  width: 100%;
+  height: 50%;
+
+  article {
+    grid-area: title;
+    overflow: hidden;
+    justify-items: center;
+    align-items: center;
+
+    h1 {
+      width: auto;
+    }
+  }
+
+  .previous-btn {
+    grid-area: previous;
+    @include login_section_title_btn;
+  }
+
+  .next-btn {
+    grid-area: next;
+    @include login_section_title_btn;
+  }
+}
+// section title layout end
+
+// form layout
+// grid template
+$login_form_template:
+  ". input ."
+  ". . ."
+  ". output ."
+  ". . .";
+
+// grid layout
+form {
+  display: grid;
+  grid-template-columns: auto 40% auto;
+  grid-template-rows: 30% 10% 10% auto;
+  grid-template-areas: $login_form_template;
+  justify-items: center;
+  align-items: center;
+  width: 100%;
+  height: 50%;
+
+  section[class*="input-"] {
+    grid-area: input;
+    width: 100%;
+    height: 100%;
+
+    &:not(:first-of-type) {
+      display: none;
+    }
+  }
+
+  .input-name {
+    width: 100%;
+    height: 100%;
+
+    input {
+      width: 100%;
+      height: 100%;
+      padding: 1rem;
+      font-size: 1rem;
+      border: .1rem solid rgb(229, 151, 0);
+      text-align: center;
+    }
+  }
+
+  .input-character {
+    text-align: center;
+
+    img {
+      margin: 1rem;
+      border: .1rem solid white;
+      transition: border .3s;
+      cursor: pointer;
+
+      &:hover {
+        border: .1rem solid lightblue;
+      }
+
+      &.choosed {
+        border: .1rem solid darkblue;
+      }
+    }
+
+    input {
+      display: none;
+    }
+  }
+
+  .output {
+    grid-area: output; 
+    width: 100%;
+    height: 100%;
+    text-align: center;
+
+    #error {
+      font-size: 1rem;
+    }
+
+    input {
+      font-size: 1rem;
+      cursor: pointer;
+      padding: .5rem;
+    }
+  }
+}
+// form layout end

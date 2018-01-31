@@ -1,0 +1,45 @@
+@import "reset";
+@import "font";
+
+$menu_color: #ff0f00;
+$menu_length: 4;
+$menu_item_width: 5%;
+$menu_template: "item1 . item2 item3 item4";
+
+$cloud_border: .4rem;
+
+.menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: grid;
+  grid-template-columns: $menu_item_width auto $menu_item_width $menu_item_width $menu_item_width;
+  grid-template-areas: $menu_template;
+  grid-column-gap: 0px;
+  justify-items: center;
+  align-items: center;
+  width: 100%;
+  padding: .1rem;
+  height: 2rem;
+  font-size: .6rem;
+  background: linear-gradient(to bottom, $menu_color, lighten($menu_color, 10%));
+
+  a {
+    color: white;
+    font-family: Ageta_Chubby_Demo;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    img {
+      vertical-align: center;
+    }
+  }
+
+  @for $i from 1 through $menu_length {
+    a:nth-child(#{$i}) {
+      grid-area: item#{$i};
+    }
+  }
+}
