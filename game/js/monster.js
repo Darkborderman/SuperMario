@@ -36,32 +36,26 @@ const Monster = {
         overlap: function(character, monster){
             if(character.body.touching.down && !character.body.touching.up)
             {
-                socket.emit(
-                    'monsterDead',
-                    {
-                        monsterKiller: Config.currentUserName,
-                        monsterType: 'goomba',
-                        id: monster.id
-                    }
-                );
                 character.body.velocity.y = Player[character.key].velocity.vertical.bounce;
                 Monster.goomba.sound.die.play();
                 Monster.goomba.destroy(monster);
             }
             else
             {
-                socket.emit(
-                    'playerDead',
-                    {
-                        name: character.name._text
-                    }
-                );
+                character.type.destroy(character);
             }
         },
         destroy: function(monster){
             monster.animations.stop();
             monster.animations.play('die');
             monster.body.enable = false;
+            setTimeout(
+                function()
+                {
+                    Monster.goomba.respawn(monster);
+                },
+                3000
+            );
         },
         respawn: function(monster){
 	        monster.body.enable = true;

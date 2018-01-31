@@ -149,10 +149,8 @@ function create()
             Player[playerType].sound[soundType].play = Player[playerType].sound[soundType].create();
         }
     }
-    // create players' container
-    Game.players = {};
-
-    Game.players.current=new PlayerSetup(
+    // create player
+    Game.player=new PlayerSetup(
         Config.currentUserName,
         Player.mario,
         Map.structure[0].start[0].x,
@@ -162,23 +160,27 @@ function create()
         Map.structure[0].start[0].x,
         Map.structure[0].start[0].y,
         null,
-        true
     )
+
     // create monsters' container
     Game.monsters = {};
+    MonsterSetup(Map.structure[0]);
     
     // create items' container
     Game.items = {};
+    ItemSetup(Map.structure[0]);
 
     // create savepoints' container
     Game.savepoints = {};
+    SavepointSetup(Map.structure[0]);
+
 }
 
 function update()
 {
     // current player collide with solid layer
     Game.engine.physics.arcade.collide(
-        Game.players.current,
+        Game.player,
         Game.map.solid
     );
 
@@ -193,7 +195,7 @@ function update()
         );
         // monster overlap with character
         Game.engine.physics.arcade.overlap(
-            Game.players.current,
+            Game.player,
             monsterGroup,
             Monster[monsterType].overlap
         );
@@ -217,7 +219,7 @@ function update()
         );
 
         Game.engine.physics.arcade.overlap(
-            Game.players.current,
+            Game.player,
             itemGroup,
             Item[itemType].overlap
         );
@@ -229,17 +231,17 @@ function update()
         let savepointGroup = Game.savepoints[savepointType];
 
         Game.engine.physics.arcade.overlap(
-            Game.players.current,
+            Game.player,
             savepointGroup,
             Savepoint[savepointType].overlap
         );
     }
 
     // detect player finish and fall out of the world
-    Map.detectPlayerWorldBound(Game.players.current);
+    Map.detectPlayerWorldBound(Game.player);
     
     /*
-    let character=Game.players.current;
+    let character=Game.player;
     
     if(character.name._text == Config.currentUserName)
     {
@@ -254,59 +256,59 @@ function update()
     */
     
     // current player key press and release event
-    let character = Game.players.current;
-    let characterType= character.type;
-    let characterCursor = character.cursor;
-    let cursor=characterCursor;
-    let characterIspressed = character.ispressed;
+    let character = Game.player;
+    let velocity=character.body.velocity;
+    let type= character.type;
+    let cursor = character.cursor;
+    let ispressed = character.ispressed;
     let name=character.name;
     // set each players' title on head
     name.x = Math.floor(character.position.x);
     name.y = Math.floor(character.position.y - character.height / 3);
 
-    character.body.velocity.y += characterType.velocity.vertical.gravity;
+    velocity.y += type.velocity.vertical.gravity;
 
     // press up and on floor
-    if(characterCursor.up.isDown && character.body.onFloor())
+    if(cursor.up.isDown && character.body.onFloor())
     {
-        character.body.velocity.y = characterType.velocity.vertical.jump;
+        velocity.y = type.velocity.vertical.jump;
     }
 
     // press or release left
-    else if(characterCursor.left.isDown != characterIspressed.left)
+    else if(cursor.left.isDown != ispressed.left)
     {
         // press left
-        if(characterCursor.left.isDown)
+        if(cursor.left.isDown)
         {
-            characterCursor.left.isDown = true;
-            character.body.velocity.x = -1*characterType.velocity.horizontal.move;
-            characterIspressed.left=true;
+            cursor.left.isDown = true;
+            velocity.x = -1*type.velocity.horizontal.move;
+            ispressed.left=true;
         }
         // release left
         else
         {
-            characterCursor.left.isDown = false;
-            character.body.velocity.x = -1*characterType.velocity.horizontal.idle;
-            characterIspressed.left=false;
+            cursor.left.isDown = false;
+            velocity.x = -1*type.velocity.horizontal.idle;
+            ispressed.left=false;
         }
     }
 
     // press or release right
-    else if(characterCursor.right.isDown != characterIspressed.right)
+    else if(cursor.right.isDown != ispressed.right)
     {
         // press right
-        if(characterCursor.right.isDown)
+        if(cursor.right.isDown)
         {
-            characterCursor.right.isDown = true;
-            character.body.velocity.x = characterType.velocity.horizontal.move;
-            characterIspressed.right = true;
+            cursor.right.isDown = true;
+            velocity.x = type.velocity.horizontal.move;
+            ispressed.right = true;
         }
         // release right
         else
         {
-            characterCursor.right.isDown = false;
-            character.body.velocity.x = characterType.velocity.horizontal.idle;
-            characterIspressed.right = false;
+            cursor.right.isDown = false;
+            velocity.x = type.velocity.horizontal.idle;
+            ispressed.right = false;
         }
     }
 

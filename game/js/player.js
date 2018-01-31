@@ -53,19 +53,25 @@ const Player = {
         {
             if(character.dieyet == false)
             {
+                Game.map.sound.stop();
+                character.type.sound.die.play();
                 character.dieyet = true;
                 character.animations.stop();
                 character.animations.play('die');
                 character.body.enable = false;
                 character.immovable = true;
             }
+            setTimeout(
+                function()
+                {
+                    Player.mario.respawn(character);
+                },
+                3000
+            );
         },
         respawn: function(character)
         {
-            if(character.name._text == Config.currentUserName)
-            {
-                Game.map.sound.loopFull();
-            }
+            Game.map.sound.loopFull();
             character.body.velocity.x = 0;
             character.body.velocity.y = 0;
             character.x = character.spawn.x;
@@ -84,13 +90,6 @@ const Player = {
             if (character.body.touching.up && otherCharacter.body.touching.down)
             {
                 //console.log(Config.currentUserName+"is touching down");
-                socket.emit(
-                    'playerDead',
-                    {
-                        playerKiller: otherCharacter.name._text,
-                        name: character.name._text
-                    }
-                );
             }
             if(character.body.touching.left)
             {
@@ -169,10 +168,7 @@ const Player = {
         },
         respawn: function(character)
         {
-            if(character.name._text == Config.currentUserName)
-            {
-                Game.map.sound.loopFull();
-            }
+            Game.map.sound.loopFull();
             character.body.velocity.x = 0;
             character.body.velocity.y = 0;
             character.x = character.spawn.x;
@@ -191,13 +187,6 @@ const Player = {
             if (character.body.touching.up && otherCharacter.body.touching.down)
             {
                 //console.log(Config.currentUserName+"is touching down");
-                socket.emit(
-                    'playerDead',
-                    {
-                        playerKiller: otherCharacter.name._text,
-                        name: character.name._text
-                    }
-                );
             }
             if(character.body.touching.left)
             {
@@ -225,18 +214,9 @@ function PlayerSetup
     vy=0,
     sx=Map.structure[0].start[0].x,
     sy=Map.structure[0].start[0].y,
-    status=null,
-    controlable=false
+    status=null
 )
 {
-    // uncontrolable character cursor simulator
-    function SyncCursor()
-    {
-        this.up = {isDown: false};
-        this.down = {isDown: false};
-        this.left = {isDown: false};
-        this.right = {isDown: false};
-    }
 
     // add character sprite
     let character = Game.engine.add.sprite(
@@ -252,16 +232,8 @@ function PlayerSetup
         left: false,
         right: false
     };
-
-    if(controlable)
-    {
-        character.cursor = Game.engine.input.keyboard.createCursorKeys();
-        Game.engine.camera.follow(character);
-    }
-    else
-    {
-        character.cursor = new SyncCursor();
-    }
+    character.cursor = Game.engine.input.keyboard.createCursorKeys();
+    Game.engine.camera.follow(character);
 
     Game.engine.physics.enable(character);
     character.body.collideWorldBounds = false;
