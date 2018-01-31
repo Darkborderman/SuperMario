@@ -134,12 +134,16 @@ const Map = {
         if(character.y + character.height >= Game.map.size.y)
         {
             character.y=Game.map.size.y-character.height-5;
-            socket.emit(
-                'playerDead',
-                {
-                    name: character.name._text
-                }
-            );
+                Game.map.sound.stop();
+                Player.mario.sound.die.play();
+                Player.mario.destroy(character);
+                setTimeout(
+                    function()
+                    {
+                        Player.mario.respawn(character);
+                    },
+                    3000
+                );
         }
         if(character.x <= 0)
         {

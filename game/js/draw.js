@@ -155,7 +155,7 @@ function create()
 
     Game.players.current=new PlayerSetup(
         Config.currentUserName,
-        Player[Config.currentUserCharacterName],
+        Player.mario,
         Map.structure[0].start[0].x,
         Map.structure[0].start[0].y,
         0,
@@ -165,8 +165,6 @@ function create()
         null,
         true
     )
-    //Game.players.hash[Config.currentUserName] = Game.players.current;
-    
     // create monsters' container
     Game.monsters = {};
     
@@ -179,19 +177,6 @@ function create()
 
 function update()
 {
-    // current player collide with other player
-    Game.engine.physics.arcade.collide(
-        Game.players.others,
-        Game.players.current,
-        Player.mario.collide
-    );
-    
-    // other player collide with other player
-    Game.engine.physics.arcade.collide(
-        Game.players.others,
-        Game.players.others
-    );
-
     // current player collide with solid layer
     Game.engine.physics.arcade.collide(
         Game.players.current,
@@ -260,153 +245,124 @@ function update()
     // detect player finish and fall out of the world
     // current player only need to detect itself
     Map.detectPlayerWorldBound(Game.players.current);
-
-    // player movement update
-    let all_players = Game.players.hash;
-    for(let player in all_players)
+    
+    /*
+    let character=Game.players.current;
+    let velocity=character.body.velocity;
+    let playerTypeVelocity=Player.mario.velocity;
+    let cursor=character.cursor;
+    
+    if(character.name._text == Config.currentUserName)
     {
-        //render player's movement
-        let character = all_players[player];
-        let name = character.name;
-        let cursor = character.cursor;
-        let velocity = character.body.velocity;
-        let playerTypeVelocity = Player[character.key].velocity;
-        let status = character.status;
-        let coin = status.coin;
-        let feather = status.feather;
-        let facing;
-        
-        // delete player if signaled
-        if(character.delete)
-        {
-            Game.players.hash[player].name.destroy();
-            Game.players.hash[player].destroy();
-            delete Game.players.hash[player];
-            continue;
-        }
-        
-        // set each players' title on head
-        name.x = Math.floor(all_players[player].position.x);
-        name.y = Math.floor(all_players[player].position.y - all_players[player].height / 3);
+        character.moneyText.setText("Coin: " + character.achieve.coin);
+        character.killText.setText("Kill: " + character.achieve.kill);
+    }
+    
+    // stop moving to left or right
+    if(!character.body.onFloor())
+        //if player pick more than 1 feather, only 1 feather will effect(or it will be overpowered)
+        //velocity.y += playerTypeVelocity.vertical.gravity - Item.feather.effect * (feather >= 1 ? 1 : 0);
 
-        if(character.name._text == Config.currentUserName)
+    if (cursor.up.isDown)
+    {
+        if(character.body.onFloor())
         {
-            character.moneyText.setText("Coin: " + character.achieve.coin);
-            character.killText.setText("Kill: " + character.achieve.kill);
-        }
-        // stop moving to left or right
-        if(!character.body.onFloor())
-            //if player pick more than 1 feather, only 1 feather will effect(or it will be overpowered)
-            velocity.y += playerTypeVelocity.vertical.gravity - Item.feather.effect * (feather >= 1 ? 1 : 0);
-
-        if (cursor.up.isDown)
-        {
-            if(character.body.onFloor())
-            {
-                velocity.y = playerTypeVelocity.vertical.jump;
-            }
-        }
-        if(cursor.left.isDown)
-        {
-            if(!character.dieyet)
-            {
-                facing = Config.status.left;
-                velocity.x = facing * (coin * Item.coin.effect + playerTypeVelocity.horizontal.move);
-                character.animations.play('left');
-            }
-        }
-        else if (cursor.right.isDown)
-        {
-            if(!character.dieyet)
-            {
-                facing = Config.status.right;
-                velocity.x = facing * (coin * Item.coin.effect + playerTypeVelocity.horizontal.move);
-                character.animations.play('right');
-
-            }
-        }
-        else if (cursor.down.isDown)
-        {
-            //temporary unusable
-        }
-        else
-        {
-            if(!character.dieyet)
-            {
-                if(velocity.x >= 0)
-                {
-                    facing = Config.status.right;
-                    character.animations.play('rightIdle');
-                }
-                else
-                {
-                    facing = Config.status.left;
-                    character.animations.play('leftIdle');
-                }
-                velocity.x = facing * playerTypeVelocity.horizontal.idle;
-            }
+            velocity.y = playerTypeVelocity.vertical.jump;
         }
     }
 
+    */
+
+    
     // current player key press and release event
-    let currentCharacter = Game.players.current;
-    let currentCharacterCursor = currentCharacter.cursor;
-    let currentCharacterIspressed = currentCharacter.ispressed;
+    let character = Game.players.current;
+    let characterType= Player.mario;
+    let characterCursor = character.cursor;
+    let cursor=characterCursor;
+    let characterIspressed = character.ispressed;
+    let name=character.name;
+        // set each players' title on head
+        name.x = Math.floor(character.position.x);
+        name.y = Math.floor(character.position.y - character.height / 3);
+
+
+    character.body.velocity.y += characterType.velocity.vertical.gravity;
 
     // press up and on floor
-    if(currentCharacterCursor.up.isDown && currentCharacter.body.onFloor())
+    if(characterCursor.up.isDown && character.body.onFloor())
     {
-        //Game.players.hash[playerData.name].body.velocity.x = playerData.vx;
-        currentCharacter.body.velocity.y = 200;
+        character.body.velocity.y -= 800;
     }
 
     // press or release left
-    else if(currentCharacterCursor.left.isDown != currentCharacterIspressed.left)
+    else if(characterCursor.left.isDown != characterIspressed.left)
     {
         // press left
-        if(currentCharacterCursor.left.isDown)
+        if(characterCursor.left.isDown)
         {
-            Game.players.hash[playerData.name].cursor[playerData.move].isDown = true;
-            Game.players.hash[playerData.name].position.x = playerData.x;
-            Game.players.hash[playerData.name].position.y = playerData.y;
-            Game.players.hash[playerData.name].body.velocity.x = playerData.vx;
-            Game.players.hash[playerData.name].body.velocity.y = playerData.vy;
-            currentCharacterIspressed.left = true;
+            characterCursor.left.isDown = true;
+            character.body.velocity.x = -1*characterType.velocity.horizontal.move;
+            characterIspressed.left=true;
         }
         // release left
         else
         {
-            Game.players.hash[playerData.name].cursor[playerData.move].isDown = false;
-            Game.players.hash[playerData.name].position.x = playerData.x;
-            Game.players.hash[playerData.name].position.y = playerData.y;
-            Game.players.hash[playerData.name].body.velocity.x = playerData.vx;
-            Game.players.hash[playerData.name].body.velocity.y = playerData.vy;
-            currentCharacterIspressed.left = false;
+            characterCursor.left.isDown = false;
+            character.body.velocity.x = -1*characterType.velocity.horizontal.idle;
+            characterIspressed.left=false;
         }
     }
 
     // press or release right
-    else if(currentCharacterCursor.right.isDown != currentCharacterIspressed.right)
+    else if(characterCursor.right.isDown != characterIspressed.right)
     {
         // press right
-        if(currentCharacterCursor.right.isDown)
+        if(characterCursor.right.isDown)
         {
-            Game.players.hash[playerData.name].cursor[playerData.move].isDown = true;
-            Game.players.hash[playerData.name].position.x = playerData.x;
-            Game.players.hash[playerData.name].position.y = playerData.y;
-            Game.players.hash[playerData.name].body.velocity.x = playerData.vx;
-            Game.players.hash[playerData.name].body.velocity.y = playerData.vy;
-            currentCharacterIspressed.right = true;
+            characterCursor.right.isDown = true;
+            character.body.velocity.x = characterType.velocity.horizontal.move;
+            characterIspressed.right = true;
         }
         // release right
         else
         {
-            Game.players.hash[playerData.name].cursor[playerData.move].isDown = false;
-            Game.players.hash[playerData.name].position.x = playerData.x;
-            Game.players.hash[playerData.name].position.y = playerData.y;
-            Game.players.hash[playerData.name].body.velocity.x = playerData.vx;
-            Game.players.hash[playerData.name].body.velocity.y = playerData.vy;
-            currentCharacterIspressed.right = false;
+            characterCursor.right.isDown = false;
+            character.body.velocity.x = characterType.velocity.horizontal.idle;
+            characterIspressed.right = false;
+        }
+    }
+
+    //render animation part
+    if(cursor.left.isDown)
+    {
+        if(!character.dieyet)
+        {
+            //velocity.x = facing * (coin * Item.coin.effect + playerTypeVelocity.horizontal.move);
+            character.animations.play('left');
+        }
+    }
+    else if (cursor.right.isDown)
+    {
+        if(!character.dieyet)
+        {
+            //velocity.x = facing * (coin * Item.coin.effect + playerTypeVelocity.horizontal.move);
+            character.animations.play('right');
+
+        }
+    }
+    else
+    {
+        if(!character.dieyet)
+        {
+            if(character.body.velocity.x >= 0)
+            {
+                character.animations.play('rightIdle');
+            }
+            else
+            {
+                character.animations.play('leftIdle');
+            }
+            //velocity.x = facing * playerTypeVelocity.horizontal.idle;
         }
     }
 }
