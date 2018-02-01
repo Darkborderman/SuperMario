@@ -250,9 +250,9 @@ function update()
     let velocity=character.body.velocity;
     let type= character.type;
     let cursor = character.cursor;
-    let ispressed = character.ispressed;
     let name=character.name;
     let coin=character.status.coin;
+    let feather=character.status.feather;
     // set each players' title on head
     name.x = Math.floor(character.position.x);
     name.y = Math.floor(character.position.y - character.height / 3);
@@ -264,24 +264,22 @@ function update()
     //movement part
     if(cursor.up.isDown && character.body.onFloor())
     {
-        velocity.y = type.velocity.vertical.jump;
+        velocity.y = type.velocity.vertical.jump -Item.feather.effect * (feather >= 1 ? 1 : 0);
+        //velocity.y += playerTypeVelocity.vertical.gravity - Item.feather.effect * (feather >= 1 ? 1 : 0);
     }
 
     if(cursor.left.isDown)
     {
         velocity.x = -1*(coin * Item.coin.effect + type.velocity.horizontal.move);
-        ispressed.left=true;
     }
 
     else if(cursor.right.isDown)
     {
         velocity.x = 1*(coin * Item.coin.effect + type.velocity.horizontal.move);
-        ispressed.right = true;
     }
     else
     {
         velocity.x = type.velocity.horizontal.idle;
-        ispressed.right = false;
     }
     //render animation part
     if(cursor.left.isDown)

@@ -93,43 +93,6 @@ const Map = {
             src: ['/game/assets/maps/sounds/worldmap.wav']
         }*/
     ],
-    detectPoint: function(character,map)
-    {
-        let spawnPointID = character.spawn.id;
-        for(let i = spawnPointID; i <= Game.map.point.end; ++i)
-        {
-            let newSpawnPoint = {
-                x: Game.map.point.midpoint[i].x,
-                y: Game.map.point.midpoint[i].y,
-            };
-            if(character.y >= newSpawnPoint.y && character.x >= newSpawnPoint.x)
-            {
-                if(spawnPointID < Game.map.point.end)
-                {
-                    character.spawn.id = i;
-                    socket.emit(
-                        'playerMidpoint',
-                        {
-                            id: i,
-                            name: character.name._text
-                        }
-                    );
-                }
-                if(spawnPointID == Game.map.point.end && Game.map.point.isFinish == false)
-                {
-                    socket.emit(
-                        'playerFinish',
-                        {
-                            name: character.name._text
-                        }
-                    );
-                    Game.map.point.isFinish = true;
-                }
-            }
-        }
-
-
-    },
     detectPlayerWorldBound: function(character)
     {
         if(character.y + character.height >= Game.map.size.y)
@@ -154,42 +117,21 @@ const Map = {
             monster.position.x = 50;
             monster.position.y = 50;
             monster.body.velocity.y=0;
-            Monster[monster.name].destroy(monster);
-            socket.emit(
-                'monsterDead',
-                {
-                    monsterType: monster.name,
-                    id: monster.id
-                }
-            );
+            Monster[monster.name].respawn(monster);
         }
         else if(monster.position.x <= 0)
         {
             monster.position.x = 50;
             monster.position.y = 50;
             monster.body.velocity.y= 0;
-            Monster[monster.name].destroy(monster);
-            socket.emit(
-                'monsterDead',
-                {
-                    monsterType: monster.name,
-                    id: monster.id
-                }
-            );     
+            Monster[monster.name].respawn(monster);
         }
         else if(monster.position.x + monster.width >= Game.map.size.x)
         {
             monster.position.x = 50;
             monster.position.y = 50;
             monster.body.velocity.y = 0;
-            Monster[monster.name].destroy(monster);
-            socket.emit(
-                'monsterDead',
-                {
-                    monsterType: monster.name,
-                    id: monster.id
-                }
-            );
+            Monster[monster.name].respawn(monster);
         }
     },
     overlap: function(player, map)

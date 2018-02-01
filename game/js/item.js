@@ -22,7 +22,7 @@ const Item = {
                 }
             }
         },
-        effect: 50,
+        effect: 75,
         bounce: {
             x: 0,
             y: 0
@@ -83,7 +83,7 @@ const Item = {
                 }
             }
         },
-        effect: 10,
+        effect: 250,
         bounce: {
             x: 1,
             y: 1
@@ -95,14 +95,22 @@ const Item = {
         },
         overlap: function(character, item)
         {
-            socket.emit(
-                'itemDead',
+            Item.feather.sound.get.play();
+            Item.feather.destroy(item,character);
+            character.achieve.feather += 1;
+        },
+        destroy: function(item, character)
+        {
+            character.status.feather += 1;
+            item.body.enable = false;
+            item.visible = false;
+            setTimeout(
+                function()
                 {
-                    itemOwner: Config.currentUserName,
-                    itemType: 'feather',
-                    id: item.id
-                }
-            );   
+                    Item.feather.respawn(item,character);
+                },
+                3000
+            );
         },
         respawn: function(item, character)
         {
@@ -110,19 +118,13 @@ const Item = {
             character.status.feather -= 1;
             item.visible = true;
 	        item.body.enable = true;
-	        item.position.x = item.spawn.x;
-            item.position.y = item.spawn.y;
-        },
-        destroy: function(item, character)
-        {
-            character.status.feather += 1;
-            item.body.enable = false;
-            item.visible = false;
+	        item.x = item.spawn.x;
+            item.y = item.spawn.y;
         }
     }
 };
 
-function ItemSetup(structure=null, itemData=null)
+function ItemSetup(structure=null)
 {
     // setup each item group
     for(let itemType in Item)
@@ -151,26 +153,12 @@ function ItemSetup(structure=null, itemData=null)
             let child = Game.items[itemType].children[i];
             child.name = itemType;
             child.id = i;
-            if(itemData)
-            {
-                child.position.x = itemData[itemType][i].x;
-                child.position.y = itemData[itemType][i].y;
-                child.body.velocity.x = itemData[itemType][i].vx;
-                child.body.velocity.y = itemData[itemType][i].vy;
-                child.spawn = {
-                    x: itemData[itemType][i].sx,
-                    y: itemData[itemType][i].sy
-                };
-            }
-            else
-            {
-                child.body.velocity.x = Item[itemType].velocity.x;
-                child.body.velocity.y = Item[itemType].velocity.y;
-                child.spawn = {
-                    x: child.position.x,
-                    y: child.position.y
-                };
-            }
+            child.body.velocity.x = Item[itemType].velocity.x;
+            child.body.velocity.y = Item[itemType].velocity.y;
+            child.spawn = {
+                x: child.position.x,
+                y: child.position.y
+            };
         }
 
         Game.items[itemType].setAll('body.gravity.y', Item[itemType].gravity.y);

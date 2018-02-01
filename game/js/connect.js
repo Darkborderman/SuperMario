@@ -447,14 +447,6 @@ socket.on('playerMidpoint', function(playerData){
 });
 
 socket.on('playerFinish', function(playerData){
-    let finishText = Game.engine.add.text(
-        $( window ).width() / 3,
-        $( window ).height() / 2 - 100,
-        playerData.name + ' win!',
-        Config.font.Bold
-    );
-    finishText.fixedToCamera = true;
-    Game.map.isFinish = true;
     let character = Game.players.current;
     //collect data for ranking
     socket.emit('collectData',{

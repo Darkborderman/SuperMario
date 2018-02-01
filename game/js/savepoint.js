@@ -22,12 +22,14 @@ const Savepoint = {
         overlap: function(character,savepoint){
             if(Game.map.isFinish == false)
             {
-                socket.emit(
-                    'playerFinish',
-                    {
-                        name: character.name._text
-                    }
+                let finishText = Game.engine.add.text(
+                    $( window ).width() / 3,
+                    $( window ).height() / 2 - 100,
+                    Config.currentUserName + ' win!',
+                    Config.font.Bold
                 );
+                finishText.fixedToCamera = true;
+                Game.map.isFinish = true;
             }
         }
     },
@@ -54,20 +56,14 @@ const Savepoint = {
         overlap: function(character,savepoint){
             if(character.spawn.x != savepoint.x && character.spawn.y != savepoint.x)
             {
-                socket.emit(
-                    'playerMidpoint',
-                    {
-                        name: character.name._text,
-                        x: savepoint.x,
-                        y: savepoint.y
-                    }
-                );
+                character.spawn.x = savepoint.x;
+                character.spawn.y = savepoint.y;
             }
         }
     }
 }
 
-function SavepointSetup(structure=null, savepointData=null)
+function SavepointSetup(structure=null)
 {
     for(let savepointType in Savepoint)
     {
@@ -88,25 +84,10 @@ function SavepointSetup(structure=null, savepointData=null)
         for(let i = 0; i < Game.savepoints[savepointType].length; ++i)
         {
             let child = Game.savepoints[savepointType].children[i];
-            child.name = savepointType;
-            if(savepointData)
-            {
-                child.position.x = savepointData[savepointType][i].x;
-                child.position.y = savepointData[savepointType][i].y;
-                child.spawn = {
-                    x: savepointData[savepointType][i].sx,
-                    y: savepointData[savepointType][i].sy
-                };
-            }
-            else
-            {
-                child.spawn = {
-                    x: child.position.x,
-                    y: child.position.y
-                };
-            }
-            // save point need to be unmoveable
-            // so there may be a bool like point.movable=false;
+            child.spawn = {
+                x: child.position.x,
+                y: child.position.y
+            };
         }
     }
 }

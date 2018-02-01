@@ -85,24 +85,6 @@ const Player = {
                 character.status[itemType] = 0;
             }
             */
-        },
-        collide: function(otherCharacter, character){
-            if (character.body.touching.up && otherCharacter.body.touching.down)
-            {
-                //console.log(Config.currentUserName+"is touching down");
-            }
-            if(character.body.touching.left)
-            {
-                //console.log(Config.currentUserName+"is touching left");
-            }
-            if(character.body.touching.up)
-            {
-                //console.log(Config.currentUserName+"is touching up");
-            }
-            if(character.body.touching.right)
-            {
-                //console.log(Config.currentUserName+"is touching right");
-            }
         }
     },
     luigi: {
@@ -182,24 +164,6 @@ const Player = {
                 character.status[itemType] = 0;
             }
             */
-        },
-        collide: function(otherCharacter, character){
-            if (character.body.touching.up && otherCharacter.body.touching.down)
-            {
-                //console.log(Config.currentUserName+"is touching down");
-            }
-            if(character.body.touching.left)
-            {
-                //console.log(Config.currentUserName+"is touching left");
-            }
-            if(character.body.touching.up)
-            {
-                //console.log(Config.currentUserName+"is touching up");
-            }
-            if(character.body.touching.right)
-            {
-                //console.log(Config.currentUserName+"is touching right");
-            }
         }
     }
 };
@@ -227,11 +191,6 @@ function PlayerSetup
 
     character.type=playerType;
 
-    // test whether player already pressed or not (for socket.io)
-    character.ispressed = {
-        left: false,
-        right: false
-    };
     character.cursor = Game.engine.input.keyboard.createCursorKeys();
     Game.engine.camera.follow(character);
 

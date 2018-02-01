@@ -1,8 +1,8 @@
 const Config = {
     window: {
         // type stored in string
-        width: '90%',
-        height: '90%'
+        width: '100%',
+        height: '100%'
     },
     gameBlock: 'game',
     font: {
