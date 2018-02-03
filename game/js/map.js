@@ -2,7 +2,7 @@ const Map = {
     structure: [
         {
             name: 'world01',
-            src: '/game/assets/maps/jsons/map.json',
+            src: '/SuperMario/game/assets/maps/jsons/map.json',
             layer: {
                 solid: 'solidLayer',
                 monster: 'monsterLayer',
@@ -25,7 +25,7 @@ const Map = {
     background: [
         {
             name: 'background01',
-            src: '/game/assets/maps/images/backgrounds/nature.png',
+            src: '/SuperMario/game/assets/maps/images/backgrounds/nature.png',
             width: '1920',
             height: '1080',
             x: 0,
@@ -35,62 +35,62 @@ const Map = {
     tileset: [
         {
             name: 'tileset01',
-            src: '/game/assets/maps/images/tilesets/tilesetx32.png'
+            src: '/SuperMario/game/assets/maps/images/tilesets/tilesetx32.png'
         }
     ],
     sound: [
         {
 
             name: 'field',
-            src: ['/game/assets/maps/sounds/field.wav']
+            src: ['/SuperMario/game/assets/maps/sounds/field.wav']
         },
         {
             name: 'cave',
-            src: ['/game/assets/maps/sounds/cave.wav']
+            src: ['/SuperMario/game/assets/maps/sounds/cave.wav']
         },
         {
             name: 'castle',
-            src: ['/game/assets/maps/sounds/castle.wav']
+            src: ['/SuperMario/game/assets/maps/sounds/castle.wav']
         },
         /*{
             name: 'finalboss',
-            src: ['/game/assets/maps/sounds/finalboss.wav']
+            src: ['/SuperMario/game/assets/maps/sounds/finalboss.wav']
         },
         {
             name: 'finish',
-            src: ['/game/assets/maps/sounds/finish.wav']
+            src: ['/SuperMario/game/assets/maps/sounds/finish.wav']
         },
         {
             name: 'flyship',
-            src: ['/game/assets/maps/sounds/flyship.wav']
+            src: ['/SuperMario/game/assets/maps/sounds/flyship.wav']
         },
         {
             name: 'ghosthouse',
-            src: ['/game/assets/maps/sounds/ghosthouse.wav']
+            src: ['/SuperMario/game/assets/maps/sounds/ghosthouse.wav']
         },
         {
             name: 'miniboss',
-            src: ['/game/assets/maps/sounds/miniboss.wav']
+            src: ['/SuperMario/game/assets/maps/sounds/miniboss.wav']
         },
         {
             name: 'rocky',
-            src: ['/game/assets/maps/sounds/rocky.wav']
+            src: ['/SuperMario/game/assets/maps/sounds/rocky.wav']
         },
         {
             name: 'surprise',
-            src: ['/game/assets/maps/sounds/surprise.wav']
+            src: ['/SuperMario/game/assets/maps/sounds/surprise.wav']
         },
         {
             name: 'timed',
-            src: ['/game/assets/maps/sounds/timed.wav']
+            src: ['/SuperMario/game/assets/maps/sounds/timed.wav']
         },
         {
             name: 'water',
-            src: ['/game/assets/maps/sounds/water.wav']
+            src: ['/SuperMario/game/assets/maps/sounds/water.wav']
         },
         {
             name: 'worldmap',
-            src: ['/game/assets/maps/sounds/worldmap.wav']
+            src: ['/SuperMario/game/assets/maps/sounds/worldmap.wav']
         }*/
     ],
     detectPlayerWorldBound: function(character)
