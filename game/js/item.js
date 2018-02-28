@@ -13,7 +13,7 @@ const Item = {
         sound : {
             get : {
                 name: 'coinGet',
-                src:'/game/assets/items/sounds/coinget.wav',
+                src:'/SuperMario/game/assets/items/sounds/coinget.wav',
                 create: () => {
                     let sfx = Game.engine.add.audio(Item.coin.sound.get.name);
                     return () => {
@@ -28,7 +28,7 @@ const Item = {
             y: 0
         },
         picture: {
-            src: '/game/assets/items/images/coin.png',
+            src: '/SuperMario/game/assets/items/images/coin.png',
             width: 32,
             height: 32
         },
@@ -74,7 +74,7 @@ const Item = {
         sound : {
             get : {
                 name: 'featherGet',
-                src:'/game/assets/items/sounds/featherget.wav',
+                src:'/SuperMario/game/assets/items/sounds/featherget.wav',
                 create: () => {
                     let sfx = Game.engine.add.audio(Item.coin.sound.get.name);
                     return () => {
@@ -89,7 +89,7 @@ const Item = {
             y: 1
         },
         picture: {
-            src: '/game/assets/items/images/feather.png',
+            src: '/SuperMario/game/assets/items/images/feather.png',
             width: 32,
             height: 32
         },

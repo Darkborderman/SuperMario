@@ -4,12 +4,12 @@ const Player = {
         picture: {
             width: 32,
             height: 56,
-            src: '/game/assets/players/images/mariox32.png'
+            src: '/SuperMario/game/assets/players/images/mariox32.png'
         },
         sound: {
             die: {
                 name: 'marioDie',
-                src: '/game/assets/players/sounds/die.wav',
+                src: '/SuperMario/game/assets/players/sounds/die.wav',
                 create: () => {
                     let sfx = Game.engine.add.audio(Player.mario.sound.die.name);
                     return () => {
@@ -19,7 +19,7 @@ const Player = {
             },
             hit: {
                 name: 'marioHit',
-                src: '/game/assets/players/sounds/hit.wav',
+                src: '/SuperMario/game/assets/players/sounds/hit.wav',
                 create: () => {
                     let sfx = Game.engine.add.audio(Player.mario.sound.hit.name);
                     return () => {
@@ -92,12 +92,12 @@ const Player = {
         picture: {
             width: 32,
             height: 56,
-            src: '/game/assets/players/images/luigix32.png'
+            src: '/SuperMario/game/assets/players/images/luigix32.png'
         },
         sound: {
             die: {
                 name: 'luigiDie',
-                src: '/game/assets/players/sounds/die.wav',
+                src: '/SuperMario/game/assets/players/sounds/die.wav',
                 create: () => {
                     let sfx = Game.engine.add.audio(Player.luigi.sound.die.name);
                     return () => {
@@ -107,7 +107,7 @@ const Player = {
             },
             hit: {
                 name: 'luigiHit',
-                src: '/game/assets/players/sounds/hit.wav',
+                src: '/SuperMario/game/assets/players/sounds/hit.wav',
                 create: () => {
                     let sfx = Game.engine.add.audio(Player.luigi.sound.hit.name);
                     return () => {
