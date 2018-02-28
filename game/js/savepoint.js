@@ -3,14 +3,14 @@ const Savepoint = {
         tileNumber: 67,
         spriteName: 'finishPoint',
         picture: {
-            src: '/game/assets/savepoints/images/finishPoint.png',
+            src: '/SuperMario/game/assets/savepoints/images/finishPoint.png',
             width: 32,
             height: 32
         },
         sound: {
             hit: {
                 name: 'finishPointHit',
-                src:'/game/assets/savepoints/sounds/hit.wav',
+                src:'/SuperMario/game/assets/savepoints/sounds/hit.wav',
                 create: () => {
                     let sfx = Game.engine.add.audio(Savepoint.finishPoint.sound.hit.name);
                     return () => {
@@ -37,14 +37,14 @@ const Savepoint = {
         tileNumber: 68,
         spriteName: 'midPoint',
         picture: {
-            src: '/game/assets/savepoints/images/midPoint.png',
+            src: '/SuperMario/game/assets/savepoints/images/midPoint.png',
             width: 32,
             height: 32
         },
         sound: {
             hit: {
                 name: 'midPointHit',
-                src:'/game/assets/savepoints/sounds/hit.wav',
+                src:'/SuperMario/game/assets/savepoints/sounds/hit.wav',
                 create: () => {
                     let sfx = Game.engine.add.audio(Savepoint.midPoint.sound.hit.name);
                     return () => {

@@ -3,14 +3,14 @@ const Monster = {
         tileNumber: 87,
         spriteName: 'goomba',
         picture: {
-            src: '/game/assets/monsters/images/goomba.png',
+            src: '/SuperMario/game/assets/monsters/images/goomba.png',
             width: 32,
             height: 32
         },
         sound: {
             die: {
                 name: 'goombaDie',
-                src:'/game/assets/monsters/sounds/hit.wav',
+                src:'/SuperMario/game/assets/monsters/sounds/hit.wav',
                 create: () => {
                     let sfx = Game.engine.add.audio(Monster.goomba.sound.die.name);
                     return () => {
@@ -71,14 +71,14 @@ const Monster = {
         tileNumber: 88,
         spriteName: 'caveTurtle',
         picture:{
-            src: '/game/assets/monsters/images/cave_turtle.png',
+            src: '/SuperMario/game/assets/monsters/images/cave_turtle.png',
             width: 32,
             height: 32
         },
         sound: {
             die: {
                 name: 'caveTurtleDie',
-                src:'/game/assets/monsters/sounds/hit.wav',
+                src:'/SuperMario/game/assets/monsters/sounds/hit.wav',
                 create: () => {
                     let sfx = Game.engine.add.audio(Monster.caveTurtle.sound.die.name);
                     return () => {
@@ -143,7 +143,7 @@ const Monster = {
         tileNumber: 86,
         spriteName: 'spikeTurtle',
         picture:{
-            src: '/game/assets/monsters/images/spike_turtle.png',
+            src: '/SuperMario/game/assets/monsters/images/spike_turtle.png',
             width: 32,
             height: 32
         },
@@ -156,7 +156,7 @@ const Monster = {
         sound: {
             die: {
                 name: 'spikeTurtleDie',
-                src: '/game/assets/monsters/sounds/empty.wav',
+                src: '/SuperMario/game/assets/monsters/sounds/empty.wav',
                 create: () => {
                     let sfx = Game.engine.add.audio(Monster.spikeTurtle.sound.die.name);
                     return () => {
@@ -205,7 +205,7 @@ const Monster = {
         tileNumber: 80,
         spriteName: 'ironFlower',
         picture:{
-            src: '/game/assets/monsters/images/iron_flower.png',
+            src: '/SuperMario/game/assets/monsters/images/iron_flower.png',
             width: 32,
             height: 32
         },
